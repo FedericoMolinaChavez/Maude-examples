@@ -1,0 +1,39 @@
+fmod LHEAP is
+ pr NAT .
+ sort Lheap .
+ subsort Nat < Lheap .
+ 
+ op mt : -> Lheap [ctor].
+ op _;_;_ : Lheap Nat Lheap -> Lheap [ctor].
+
+ vars N1 N2 : Nat .
+ vars H H3 H1 H2 : Lheap .
+ op getmin : Lheap -> Nat .
+ eq getmin (H1 ; N1 ; H2) = N1 .
+
+ op getRank : Lheap -> Nat .
+ eq getRank (mt) = 0 .
+ eq getRank (H1 ; N1 ; H2) = 1 + getRank(H2) .
+
+
+
+ op insert : Lheap Lheap -> Lheap .
+ eq insert (mt , H) = H .
+ ceq insert ((H ; N1 ; H3), (H2 ; N2 ; H1)) = balance((H ; N1 ; (H2 ; N2 ; H1))) if H3 == mt .
+ eq insert ((H ; N1 ; H3), (H2 ; N2 ; H1)) = balance(insert (H3 , (H2 ; N2 ; H1))) .
+
+ op balance : Lheap -> Lheap .
+ ceq balance (H ; N1 ; H2) = (H2 ; N1 ; H) if getRank(H2) > getRank(H) .
+ eq balance (H ; N1 ; H2) =  (H ; N1 ; H2) [owise].
+
+ op merge : Lheap Lheap -> Lheap .
+ eq merge (mt , H) = H .
+ eq merge (H , mt) = H .
+ ceq merge ((H1 ; N1 ; H2) , (H ; N2 ; H3)) = merge((H ; N2 ; H3) , (H1 ; N1 ; H2)) if N2 < N1 .
+ eq merge ((H1 ; N1 ; H2) , (H ; N2 ; H3)) =   balance(H1 ; N1 ; insert (H2, (H ; N2 ; H3))) .
+
+ op elimO : Lheap -> Lheap .
+ eq elimO (mt) = mt .
+ eq elimO (H1 ; N1 ; H2) = merge(H1 , H2) .
+
+endfm 

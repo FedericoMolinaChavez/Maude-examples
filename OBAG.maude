@@ -1,0 +1,32 @@
+fmod OBAG is
+ pr NAT .
+ sort OBag .
+ subsort Nat < OBag .
+
+ op mt : -> OBag [ctor].
+ op __ : OBag OBag -> OBag [ctor assoc comm id: mt] .
+
+ vars O O1 O2 : OBag .
+
+ vars N N1 N2 : Nat .
+
+ op len : OBag -> Nat .
+ eq len (mt) = 0 .
+ eq len (N1 O) = 1 + len(O) .
+
+ op _U_ : OBag OBag -> OBag [comm prec 70] .
+
+
+ op _&&_ : OBag OBag -> OBag [comm prec 70] .
+ eq (O1 && mt) = mt .
+ eq (mt && O2) = mt .
+ eq (N1 O1) && (N1 O2) = N1  (O1 && O2) .
+ eq O1 && O2 = mt [owise] .   
+
+ op _\_ : OBag OBag -> OBag [prec 72] .
+ eq N1 O1 \ N1 O2 = O1 \ O2 .
+ eq O1 \ O2 = O1 [owise] .
+
+
+
+endfm  

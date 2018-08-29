@@ -1,0 +1,43 @@
+mod BANK-ACCOUNT is
+ protecting INT .
+ inc CONFIGURATION .
+ op Account : -> Cid [ctor] .
+ op bal :_ : Int -> Attribute [ctor gather (&)] .
+ ops credit debit : Oid Nat -> Msg [ctor] .
+ vars A B : Oid .
+ vars M N N' : Nat .
+
+ rl [credit] :
+  < A : Account | bal : N >
+  credit (A, M)
+  => < A : Account | bal : N + M > .
+  
+ crl [debit] :
+  < A : Account | bal : N >
+  debit(A, M)
+  => < A : Account | bal : N - M > 
+  if N >= M .
+ op from_to_transfer_ : Oid Oid Nat -> Msg [ctor] .
+ crl [transfer] :
+  (from A to B transfer M)
+  < A : Account | bal : N >
+  < B : Account | bal : N' >
+  => < A : Account | bal : N - M >
+  < B : Account | bal : N' + M >
+  if N >= M .
+endm
+
+
+mod BANK-ACCOUNT-TEST is
+ ex BANK-ACCOUNT .
+ ops A-001 A-002 A-003 : -> Oid .
+ op bankConf : -> Configuration .
+ eq bankConf
+  = < A-001 : Account | bal : 300 >
+  debit(A-001, 200)
+  debit(A-001, 150)
+  < A-002 : Account | bal : 250 >
+  debit(A-002, 400)
+  < A-003 : Account | bal : 1250 >
+  (from A-003 to A-002 transfer 300) .
+endm

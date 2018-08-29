@@ -1,0 +1,57 @@
+fmod OLIST is 
+ pr NAT .
+ sort OList .
+ op mt :	-> OList [ctor] .
+ op _;_ : Nat OList -> OList [ctor] .
+
+ vars N1 N2 : Nat .
+ vars L1 L2 L3 : OList .
+
+ op len : OList -> Nat .
+ eq len(mt) = 0 .
+ eq len(N1 ; L1) = 1 + len(L1) .
+
+ op concat : OList OList -> OList .
+ eq concat (mt , L1) = (L1) .
+ eq concat (N1 ; L2 , L1) = N1 ; concat(L2, L1) . 
+
+ op rev : OList -> OList .
+ eq rev(mt) = mt .
+ eq rev(N1 ; L1) = concat(rev(L1), N1 ; mt) .
+
+ op prefix : Nat OList -> OList .
+ eq prefix(0, L1) = (mt) .
+ eq prefix(N1, (N2 ; L1)) = N2 ; prefix(sd (N1, 1), L1) .
+
+ op postfix : Nat OList -> OList .
+ eq postfix(0, L1) = (mt) .
+ eq postfix(N1, L1) = prefix(N1 , rev(L1)) .
+
+ op mergesort : OList -> OList .
+ eq mergesort (mt) = mt .
+ eq mergesort(N1 ; mt) = (N1 ; mt) .
+ eq mergesort (L1) = merge(sort(prefix(len(L1) << 1 , L1)) , sort(prefix (sd ((len(L1) << 1 ), 1) , L1) ) ) .
+
+ op sort : OList -> OList .
+ eq sort (mt) = mt .
+ eq sort (N1 ; mt) = (N1 ; mt) .
+ eq sort (L1) = sort(prefix(len(L1) << 1 , L1)) .
+
+ op merge : OList OList -> OList .
+
+ op even : Nat -> Nat .
+ eq even (0) = (1) .
+ eq even (1) = (0) .
+ eq even (N1) = even(N1 rem 2) .
+
+ op evenNumbers : OList OList -> OList .
+ eq evenNumbers (mt, L2) = (L2) .
+ ceq evenNumbers (N1 ; L1, L2) = evenNumbers(L1, (N1 ; L2)) if even(N1) == 1 .
+ ceq evenNumbers (N1 ; L1 , L2) = evenNumbers(L1, L2) if even(N1) == 0 .
+
+ op numberofpairs : OList -> Nat .
+ eq numberofpairs (L1) = len (evenNumbers(L1 , mt)) .
+
+
+
+endfm

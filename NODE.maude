@@ -1,0 +1,20 @@
+fmod NODE is
+ pr NAT .
+ sort Node .
+ subsort Nat < Node .
+ op nil : -> Node [ctor] .
+ op __ : Nat Nat -> Node [ctor assoc comm id: nil] .
+
+ vars N1 : Nat .
+ vars O : Node .
+ op getRank : Node -> Nat .
+ eq getRank (nil) = 0 .
+ eq getRank (O N1) = N1 .
+
+ op getVal : Node -> Nat .
+ eq getVal (nil) = 0 .
+ eq getVal (N1 O) = N1 .
+
+
+
+endfm

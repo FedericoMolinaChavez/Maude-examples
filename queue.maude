@@ -1,0 +1,28 @@
+fmod QUEUE is
+ pr INT .
+ sort queue .
+ subsort Int < queue .
+ op mt :	-> queue [ctor] .
+ op _;_ : queue queue -> queue [assoc ctor id: mt] .
+ 
+ vars Q1 Q2 : queue .
+ vars N1 N2 : Int .
+
+ op pushback : Int queue -> queue [ctor] .
+ eq pushback (N1 , Q1) = N1 ; Q1 .
+
+  op len : queue -> Int  .
+ eq len(mt)
+  = 0 .
+ eq len(N1 ; Q1) = 1 + len(Q1) .
+
+ op front : queue -> Int .
+ eq front (Q1 ; N1) = N1 .
+
+ op back : queue -> Int .
+ eq back (N1 ; Q1) = N1 .
+
+ op popfront : queue -> queue .
+ eq popfront (Q1 ; N1) = Q1 .  
+
+endfm
